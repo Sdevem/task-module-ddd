@@ -15,3 +15,9 @@ export class InvalidStatusTransitionError extends Error {
     super(`Cannot transition from ${from} to ${to}`)
   }
 }
+
+export class TaskNotFoundError extends Error {
+  constructor(id: string) {
+    super(`Task with ID ${id} not found`)
+  }
+}
