@@ -1,2 +1,3 @@
-# task-module-ddd
-Backend technical challenge implementing a Task module using Domain-Driven Design (DDD), Clean Architecture, and TypeScript with NestJS.
+# Task Module - DDD
+
+Technical challenge implementing a task module using NestJS, following DDD and Clean Architecture principles.
