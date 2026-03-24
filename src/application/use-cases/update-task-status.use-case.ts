@@ -1,7 +1,7 @@
 import { TaskRepository } from '../repositories/task-repository.interface'
 import { TaskStatus } from '../../domain/enums/task-status.enum'
 import { Either, left, right } from '../../shared/either'
-import { TaskNotFoundError } from 'src/domain/errors/task.errors';
+import { TaskNotFoundError } from '../../domain/errors/task.errors'
 
 export class UpdateTaskStatusUseCase {
   constructor(private repository: TaskRepository) {}
