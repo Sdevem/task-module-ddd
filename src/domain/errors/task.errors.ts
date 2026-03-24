@@ -10,6 +10,18 @@ export class InvalidDueDateError extends Error {
   }
 }
 
+export class AssigneeRequiredError extends Error {
+  constructor() {
+    super('Assignee is required')
+  }
+}
+
+export class OrganizationRequiredError extends Error {
+  constructor() {
+    super('Organization is required')
+  }
+}
+
 export class InvalidStatusTransitionError extends Error {
   constructor(from: string, to: string) {
     super(`Cannot transition from ${from} to ${to}`)
