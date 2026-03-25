@@ -7,6 +7,7 @@ import {
   HttpStatus,
 } from '@nestjs/common'
 
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger'
 import { CreateTaskUseCase } from '../../application/use-cases/create-task.use-case'
 import { UpdateTaskStatusUseCase } from '../../application/use-cases/update-task-status.use-case'
 
@@ -18,19 +19,12 @@ import {
   InvalidStatusTransitionError,
 } from '../../domain/errors/task.errors'
 import { TaskNotFoundError } from '../../domain/errors/task.errors'
+import { CreateTaskDTO } from '../dtos/create-task.dto'
+import { UpdateTaskStatusDTO } from '../dtos/update-task-status.dto'
 
-type CreateTaskDTO = {
-  title: string
-  description?: string
-  assigneeId: string
-  priority?: TaskPriority
-  dueDate: string
-}
 
-type UpdateTaskStatusDTO = {
-  status: TaskStatus
-}
 
+@ApiTags('tasks')
 @Controller('/api/v1/tasks')
 export class TaskController {
   constructor(
@@ -38,8 +32,11 @@ export class TaskController {
     private readonly updateTaskStatusUseCase: UpdateTaskStatusUseCase,
   ) {}
 
-  @Post()
-  async create(@Body() body: CreateTaskDTO) {
+@Post()
+@ApiOperation({ summary: 'Create a new task' })
+@ApiResponse({ status: 201, description: 'Task created successfully' })
+@ApiResponse({ status: 400, description: 'Invalid input' })
+async create(@Body() body: CreateTaskDTO) {
     if (!body || !body.title || !body.assigneeId || !body.dueDate) {
         return {
             statusCode: 400,
@@ -68,12 +65,16 @@ export class TaskController {
   }
 
   @Patch(':id/status')
+  @ApiOperation({ summary: 'Update task status' })
+  @ApiResponse({ status: 200, description: 'Task updated successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid status transition' })
+  @ApiResponse({ status: 404, description: 'Task not found' })
   async updateStatus(
     @Param('id') id: string,
     @Body() body: UpdateTaskStatusDTO,
   ) {
     if (!body || !body.status) {
-        return { statusCode: 400, message: 'status is required' }
+        return { statusCode: HttpStatus.BAD_REQUEST, message: 'Status is required' }
     }
     const result = await this.updateTaskStatusUseCase.execute(
       id,
